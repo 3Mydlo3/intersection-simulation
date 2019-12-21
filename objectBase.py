@@ -14,8 +14,8 @@ class ObjectBase:
     def assing_parent_object(self, parent_object):
         self.parent_object = parent_object
 
-    def get_parent_object(self):
-        return self.parent_object
-
     def get_child_objects(self):
         return self.child_objects
+
+    def get_parent_object(self):
+        return self.parent_object
