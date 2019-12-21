@@ -17,5 +17,13 @@ class ObjectBase:
     def get_child_objects(self):
         return self.child_objects
 
+    def get_intersection(self):
+        intersection = self
+        parent_object = self.get_parent_object()
+        while parent_object is not None:
+            intersection = parent_object
+            parent_object = parent_object.get_parent_object()
+        return intersection
+
     def get_parent_object(self):
         return self.parent_object
