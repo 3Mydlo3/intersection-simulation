@@ -1,5 +1,6 @@
 from road import Road
 from stream import Stream
+from priority import Priority
 from objectBase import ObjectBase
 
 class Intersection(ObjectBase):
@@ -41,4 +42,15 @@ class Intersection(ObjectBase):
                                     connected_with=self.roads[_y].get_outgoing_lane())
                     streams.append(stream)
                     _i += 1
+        # Initialize stream priorities
+        priorities = [
+            Priority(higher_priority=[4, 5], lower_priority=[3], non_colliding=[1, 2]),
+            Priority(higher_priority=[], lower_priority=[3], non_colliding=[0, 2, 4, 5]),
+            Priority(higher_priority=[], lower_priority=[4], non_colliding=[0, 1, 3, 5]),
+            Priority(higher_priority=[0, 1, 4], lower_priority=[], non_colliding=[2, 5]),
+            Priority(higher_priority=[2, 3], lower_priority=[0], non_colliding=[1, 5]),
+            Priority(higher_priority=[], lower_priority=[0], non_colliding=[1, 2, 3, 4])
+        ]
+        for _i in range (0, 6):
+            streams[_i].assign_priority(priorities[_i])
         return streams
