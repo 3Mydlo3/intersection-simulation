@@ -39,3 +39,7 @@ class TimeFlow:
                 if self.check_end_condition(checked_time):
                     return False
         return checked_time
+
+    def get_current_events(self):
+        """Function returns events planned for current time"""
+        return self.time_events[self.current_time]
