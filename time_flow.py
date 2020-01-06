@@ -14,7 +14,7 @@ class TimeFlow:
         next_event_time = self.get_next_event_time()
         if next_event_time is False:
             return False
-        self.current_time += next_event_time
+        self.current_time = next_event_time
         return self
 
     def check_end_condition(self, time_checked=None):
