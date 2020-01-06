@@ -13,7 +13,10 @@ class Simulation:
         return False
 
     def run_simulation(self):
+        """Function handles simulation flow"""
+        # Check end conditions
         while not self.check_end():
+            # Try to advance time. If failed simulation ended
             success = self.time.advance_time()
             if not success:
                 return False

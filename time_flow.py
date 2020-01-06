@@ -22,6 +22,7 @@ class TimeFlow:
         if time_checked is None:
             time_checked = self.current_time
         if time_checked >= self.end_time:
+            # Checked time is out of time horizon, set current time as end time
             self.current_time = self.end_time
             return True
         else:
@@ -33,8 +34,11 @@ class TimeFlow:
         checked_time = Time(time_reference=self.current_time)
         while next_events == []:
             try:
+                # Get planned events for given time
                 next_events = self.time_events[checked_time]
             except KeyError:
+                # There were no events so we need to increase time
+                # and check end conditions
                 checked_time += Time(seconds=1)
                 if self.check_end_condition(checked_time):
                     return False
