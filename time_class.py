@@ -47,6 +47,10 @@ class Time:
         else:
             return NotImplemented
 
+    def __hash__(self):
+        """Make object hashable for use as dictionary key"""
+        return hash(str(self.convert_to_seconds()))
+
     def __add__(self, other):
         """For + operation support"""
         if isinstance(other, Time):

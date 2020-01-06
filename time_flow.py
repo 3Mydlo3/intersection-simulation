@@ -12,6 +12,8 @@ class TimeFlow:
     def advance_time(self):
         """Function advances simulation time"""
         next_event_time = self.get_next_event_time()
+        if next_event_time is False:
+            return False
         self.current_time += next_event_time
         return self
 
@@ -24,3 +26,16 @@ class TimeFlow:
             return True
         else:
             return False
+
+    def get_next_event_time(self):
+        """Function returns time of the next planned event"""
+        next_events = []
+        checked_time = Time(time_reference=self.current_time)
+        while next_events == []:
+            try:
+                next_events = self.time_events[checked_time]
+            except KeyError:
+                checked_time += Time(seconds=1)
+                if self.check_end_condition(checked_time):
+                    return False
+        return checked_time
