@@ -47,6 +47,27 @@ class Time:
         else:
             return NotImplemented
 
+    def __add__(self, other):
+        """For + operation support"""
+        if isinstance(other, Time):
+            self.hours += other.hours
+            self.minutes += other.minutes
+            self.seconds += other.seconds
+            self.update_time()
+            return Time(time_reference=self)
+        else:
+            return NotImplemented
+
+    def __iadd__(self, other):
+        """For += operation support"""
+        if isinstance(other, Time):
+            self.hours += other.hours
+            self.minutes += other.minutes
+            self.seconds += other.seconds
+            self.update_time()
+        else:
+            return NotImplemented
+
     def update_time(self):
         """Function updates time to keep minutes and seconds under 60"""
         new_minutes = floor(self.seconds/60)
