@@ -12,6 +12,41 @@ class Time:
             self.seconds += time_reference.seconds
             self.update_time()
 
+    def __eq__(self, other):
+        """For == comparison support"""
+        if isinstance(other, Time):
+            return True if self.convert_to_seconds() == other.convert_to_seconds() else False
+        else:
+            return NotImplemented
+
+    def __gt__(self, other):
+        """For > comparison support"""
+        if isinstance(other, Time):
+            return True if self.convert_to_seconds() > other.convert_to_seconds() else False
+        else:
+            return NotImplemented
+
+    def __lt__(self, other):
+        """For < comparison support"""
+        if isinstance(other, Time):
+            return True if self.convert_to_seconds() < other.convert_to_seconds() else False
+        else:
+            return NotImplemented
+
+    def __ge__(self, other):
+        """For >= comparison support"""
+        if isinstance(other, Time):
+            return True if self.convert_to_seconds() >= other.convert_to_seconds() else False
+        else:
+            return NotImplemented
+
+    def __le__(self, other):
+        """For <= comparison support"""
+        if isinstance(other, Time):
+            return True if self.convert_to_seconds() <= other.convert_to_seconds() else False
+        else:
+            return NotImplemented
+
     def update_time(self):
         """Function updates time to keep minutes and seconds under 60"""
         new_minutes = floor(self.seconds/60)
