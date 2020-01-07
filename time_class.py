@@ -7,10 +7,7 @@ class Time:
         self.seconds = seconds
         # If time reference was given, adjust
         if time_reference is not None:
-            self.hours += time_reference.hours
-            self.minutes += time_reference.minutes
-            self.seconds += time_reference.seconds
-            self.update_time()
+            self += time_reference
 
     def __eq__(self, other):
         """For == comparison support"""
