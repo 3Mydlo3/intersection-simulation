@@ -57,7 +57,7 @@ class Time:
             self.update_time()
             return Time(time_reference=self)
         elif isinstance(other, int):
-            self.seconds += other.seconds
+            self.seconds += other
             self.update_time()
             return Time(time_reference=self)
         else:
@@ -70,9 +70,11 @@ class Time:
             self.minutes += other.minutes
             self.seconds += other.seconds
             self.update_time()
+            return self
         elif isinstance(other, int):
-            self.seconds += other.seconds
+            self.seconds += other
             self.update_time()
+            return self
         else:
             return NotImplemented
 
