@@ -9,6 +9,14 @@ class TimeFlow:
         # Key is hashed time (in seconds) and value is list of events.
         self.time_events = {}
 
+    def add_event(self, event):
+        """Method adds event to events list"""
+        event_time = event.get_event_time()
+        try:
+            self.time_events[event_time].append(event)
+        except KeyError:
+            self.time_events[event_time] = [event]
+
     def advance_time(self):
         """Function advances simulation time"""
         next_event_time = self.get_next_event_time()
@@ -27,6 +35,12 @@ class TimeFlow:
             return True
         else:
             return False
+
+    def execute_events(self):
+        """Function executes current time events"""
+        current_events = self.get_current_events()
+        for event in current_events:
+            event.on_executed()
 
     def get_current_time(self):
         """Function returns current time"""

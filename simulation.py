@@ -1,6 +1,6 @@
 from time_flow import TimeFlow
 from intersection import Intersection
-from car import Car
+from events import CarArrival
 
 class Simulation:
     def __init__(self):
@@ -19,6 +19,9 @@ class Simulation:
         Functions handles simualtion start
         Schedules first car for each stream.
         """
+        self.streams = self.intersection.get_streams()
+        for _stream in self.streams:
+            CarArrival(time_flow=self.time, stream=_stream)
         self.run_simulation()
 
     def run_simulation(self):
@@ -29,4 +32,6 @@ class Simulation:
             success = self.time.advance_time()
             if not success:
                 return False
+            # Execute planned events
+            self.time.execute_events()
 
