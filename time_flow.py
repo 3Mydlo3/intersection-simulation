@@ -35,7 +35,7 @@ class TimeFlow:
     def get_next_event_time(self):
         """Function returns time of the next planned event"""
         next_events = []
-        checked_time = Time(time_reference=self.current_time)
+        checked_time = Time(time_reference=self.current_time) + 1
         while next_events == []:
             try:
                 # Get planned events for given time
@@ -43,7 +43,7 @@ class TimeFlow:
             except KeyError:
                 # There were no events so we need to increase time
                 # and check end conditions
-                checked_time += Time(seconds=1)
+                checked_time += 1
                 if self.check_end_condition(checked_time):
                     return False
         return checked_time
