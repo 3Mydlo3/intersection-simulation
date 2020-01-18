@@ -7,6 +7,9 @@ class Stream(ObjectBase):
         self.connected_with = connected_with
         self.priority = None
 
+    def add_to_queue(self, car):
+        self.parent_object.add_to_queue(car)
+
     def assign_priority(self, priority):
         self.priority = priority
 
