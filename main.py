@@ -1,8 +1,9 @@
 # Files
-from intersection import Intersection
+from simulation import Simulation
 
 """
     SCRIPT
 """
 
-intersection = Intersection()
+simulation = Simulation()
+simulation.run_simulation()
