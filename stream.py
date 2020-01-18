@@ -13,6 +13,12 @@ class Stream(ObjectBase):
     def assign_priority(self, priority):
         self.priority = priority
 
+    def get_id(self):
+        return self.id
+
+    def get_priority(self):
+        return self.priority
+
     def get_queue_first_car(self):
         """Returns first car in queue for given stream's queue"""
         return self.parent_object.get_first_car()
