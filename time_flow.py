@@ -28,6 +28,10 @@ class TimeFlow:
         else:
             return False
 
+    def get_current_time(self):
+        """Function returns current time"""
+        return self.current_time
+
     def get_next_event_time(self):
         """Function returns time of the next planned event"""
         next_events = []
