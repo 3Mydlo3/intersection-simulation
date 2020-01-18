@@ -50,16 +50,17 @@ class Time:
 
     def __add__(self, other):
         """For + operation support"""
+        new_time = Time(time_reference=self)
         if isinstance(other, Time):
-            self.hours += other.hours
-            self.minutes += other.minutes
-            self.seconds += other.seconds
-            self.update_time()
-            return Time(time_reference=self)
+            new_time.hours += other.hours
+            new_time.minutes += other.minutes
+            new_time.seconds += other.seconds
+            new_time.update_time()
+            return new_time
         elif isinstance(other, int):
-            self.seconds += other
-            self.update_time()
-            return Time(time_reference=self)
+            new_time.seconds += other
+            new_time.update_time()
+            return new_time
         else:
             return NotImplemented
 
