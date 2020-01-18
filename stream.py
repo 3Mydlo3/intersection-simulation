@@ -16,3 +16,13 @@ class Stream(ObjectBase):
     def get_queue_first_car(self):
         """Returns first car in queue for given stream's queue"""
         return self.parent_object.get_first_car()
+
+    def is_queue_first_car(self):
+        """
+        Each queue handles two streams.
+        Method checks if first car in queue belongs to this stream.
+        """
+        if self.parent_object.get_first_car().get_stream = self:
+            return True
+        else:
+            return False
