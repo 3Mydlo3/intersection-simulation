@@ -117,3 +117,7 @@ class Time:
         minutes = floor((seconds - hours * 3600)/60)
         seconds -= (hours * 3600 + minutes * 60)
         return Time(hours, minutes, seconds)
+
+    def convert_to_text(self):
+        """Method prints time"""
+        return (f"{self.hours}:{self.minutes}:{self.seconds}")
