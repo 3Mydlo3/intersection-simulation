@@ -16,6 +16,14 @@ class Car(ObjectBase):
         """Method returns car's stream"""
         return self.parent_object
 
+    def has_arrived(self):
+        return self.arrival.is_executed()
+
+    def has_departed(self):
+        if self.departed is None:
+            return False
+        return self.departed.is_executed()
+
     def is_first_in_queue(self):
         """Method checks if car is first in queue"""
         if self is self.parent_object.get_queue_first_car():

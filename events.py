@@ -7,6 +7,7 @@ class CarArrival:
         self.stream = stream
         # Schedule Event - event_time
         self.schedule_arrival()
+        self.executed = False
 
     def get_event_time(self):
         """Method returns event time"""
@@ -14,7 +15,11 @@ class CarArrival:
 
     def execute(self):
         """Method executes event"""
+        self.executed = True
         return self.on_executed()
+
+    def is_executed(self):
+        return self.executed
 
     def on_executed(self):
         """
@@ -50,12 +55,17 @@ class CarDeparture:
         self.queue = self.stream.get_queue()
         self.priority = self.stream.get_priority()
         self.time_flow.add_conditional_event(self)
+        self.executed = False
 
     def execute(self):
         """Method executes event"""
         if not self.pre_executed():
             return False
+        self.executed = True
         return self.on_executed()
+
+    def is_executed(self):
+        return self.executed
 
     def pre_executed(self):
         """
@@ -91,14 +101,19 @@ class CarDeparted:
         self.car = car
         self.stream = car.get_stream()
         self.schedule_departed()
+        self.executed = False
 
     def execute(self):
         """Method executes event"""
+        self.executed = True
         return self.on_executed()
 
     def get_event_time(self):
         """Method returns event time"""
         return self.event_time
+
+    def is_executed(self):
+        return self.executed
 
     def on_executed(self):
         """
