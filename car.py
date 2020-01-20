@@ -1,4 +1,5 @@
 from objectBase import ObjectBase
+from time_class import Time
 
 class Car(ObjectBase):
     """
@@ -12,10 +13,15 @@ class Car(ObjectBase):
         self.arrival = None
         self.departing = None
         self.departed = None
+        self.time_in_system = Time()
 
     def get_stream(self):
         """Method returns car's stream"""
         return self.parent_object
+
+    def get_time_in_system(self):
+        """Method returns car's time in system"""
+        return self.time_in_system
 
     def has_arrived(self):
         return self.arrival.is_executed()
@@ -68,3 +74,12 @@ class Car(ObjectBase):
     def set_departure_event(self, event):
         """Method sets departure event"""
         self.departed = event
+
+    def calculate_time_in_system(self):
+        """
+        Method calculates time spent in system
+        from arrival to full departure
+        """
+        arrival_time = self.arrival.get_event_time()
+        departed_time = self.departed.get_event_time()
+        self.time_in_system = departed_time - arrival_time

@@ -124,6 +124,7 @@ class CarDeparted:
         Removes car from intersection
         """
         self.car.remove_from_intersection()
+        self.car.calculate_time_in_system()
 
     def schedule_departed(self):
         """Method schedules car's departure time"""
