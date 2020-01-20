@@ -55,6 +55,8 @@ class CarDeparture:
         self.queue = self.stream.get_queue()
         self.priority = self.stream.get_priority()
         self.time_flow.add_conditional_event(self)
+        # Assign departing event
+        self.car.set_departing_event(self)
         self.executed = False
 
     def execute(self):

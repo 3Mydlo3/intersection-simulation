@@ -10,6 +10,7 @@ class Car(ObjectBase):
         super().__init__(id_=id_, parent_object=parent_object)
         # Arrival and departure events for later calculations
         self.arrival = None
+        self.departing = None
         self.departed = None
 
     def get_stream(self):
@@ -23,6 +24,14 @@ class Car(ObjectBase):
         if self.departed is None:
             return False
         return self.departed.is_executed()
+
+    def is_awaiting(self):
+        return self.has_arrived() and not self.has_departed() and not self.is_departing()
+
+    def is_departing(self):
+        if self.departing is None:
+            return False
+        return self.is_departing()
 
     def is_first_in_queue(self):
         """Method checks if car is first in queue"""
@@ -51,6 +60,10 @@ class Car(ObjectBase):
     def set_arrival_event(self, event):
         """Method sets arrival event"""
         self.arrival = event
+
+    def set_departing_event(self, event):
+        """Method sets departing event"""
+        self.departing = event
 
     def set_departure_event(self, event):
         """Method sets departure event"""
