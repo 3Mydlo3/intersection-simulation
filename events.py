@@ -78,7 +78,40 @@ class CarDeparture:
         and adds conditional event for next car
         """
         self.queue.remove_first_car().move_to_intersection()
+        CarDeparted(self.time_flow, self.car)
         self.time_flow.remove_conditional_event(self)
         # Add conditional event for next car in queue
         CarDeparture(time_flow=self.time_flow, car=self.queue.get_first_car())
         return True
+
+
+class CarDeparted:
+    def __init__(self, time_flow, car):
+        self.time_flow = time_flow
+        self.car = car
+        self.stream = car.get_stream()
+        self.schedule_departed()
+
+    def execute(self):
+        """Method executes event"""
+        return self.on_executed()
+
+    def get_event_time(self):
+        """Method returns event time"""
+        return self.event_time
+
+    def on_executed(self):
+        """
+        Method run when event is eecuted
+        Removes car from intersection
+        """
+        self.car.remove_from_intersection()
+
+    def schedule_departed(self):
+        """Method schedules car's departure time"""
+        # Schedule departure
+        self.event_time = self.time_flow.get_current_time() + np.random.randint(3, 5)
+        # Assign departure event
+        self.car.set_departure_event(self)
+        # Add event to timeflow
+        self.time_flow.add_time_event(self)
