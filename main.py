@@ -7,3 +7,4 @@ from simulation import Simulation
 
 # Create and run simulation
 simulation = Simulation()
+simulation.print_stats()
