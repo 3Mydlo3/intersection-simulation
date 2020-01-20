@@ -14,6 +14,10 @@ class Simulation:
             return True
         return False
 
+    def get_all_cars(self):
+        """Method returns all cars from simulation"""
+        return self.intersection.get_all_cars()
+
     def start_simulation(self):
         """
         Functions handles simualtion start

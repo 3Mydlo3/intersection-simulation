@@ -15,6 +15,28 @@ class Intersection(ObjectBase):
         self.outgoing_lanes = self.get_outgoing_lanes()
         self.initialize_streams()
 
+    def get_awaiting_cars(self):
+        """
+        Method returns all cars that are
+        currently in queues
+        """
+        awaiting_cars = []
+        for _lane in self.get_incoming_lanes():
+            awaiting_cars.extend(_lane.get_queue())
+        return awaiting_cars
+
+
+    def get_all_cars(self):
+        """
+        Method returns all cars that are
+        or were on the intersection
+        """
+        cars = []
+        for _stream in self.get_streams():
+            stream_cars = _stream.get_child_objects()
+            cars.extend(stream_cars)
+        return cars
+
     def get_incoming_lanes(self):
         incoming_lanes = []
         for road in self.roads:
