@@ -13,7 +13,7 @@ class CarArrival:
         """Method returns event time"""
         return self.event_time
 
-    def execute(self):
+    def execute(self, forced=False):
         """Method executes event"""
         self.executed = True
         return self.on_executed()
@@ -60,9 +60,9 @@ class CarDeparture:
         self.car.set_departing_event(self)
         self.executed = False
 
-    def execute(self):
+    def execute(self, forced=False):
         """Method executes event"""
-        if not self.pre_executed():
+        if not self.pre_executed() and not forced:
             return False
         self.executed = True
         return self.on_executed()
@@ -106,7 +106,7 @@ class CarDeparted:
         self.schedule_departed()
         self.executed = False
 
-    def execute(self):
+    def execute(self, forced=False):
         """Method executes event"""
         self.executed = True
         return self.on_executed()
