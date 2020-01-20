@@ -2,12 +2,13 @@ from math import floor
 
 class Time:
     def __init__(self, hours=0, minutes=0, seconds=0, time_reference=None):
-        self.hours = hours
-        self.minutes = minutes
-        self.seconds = seconds
+        self.hours = int(hours)
+        self.minutes = int(minutes)
+        self.seconds = int(seconds)
         # If time reference was given, adjust
         if time_reference is not None:
             self += time_reference
+        self.update_time()
 
     def __eq__(self, other):
         """For == comparison support"""
