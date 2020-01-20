@@ -22,7 +22,10 @@ class CarArrival:
         Moves assigned car to appropriate queue
         and schedules next car arrival event
         """
+        # Move car to queue and assign conditional departure event
         self.car.move_to_queue()
+        CarDeparture(time_flow=self.time_flow, car=self.car)
+        # Schedule next car arrival for given stream
         CarArrival(time_flow=self.time_flow, stream=self.stream)
         return True
 
@@ -35,3 +38,47 @@ class CarArrival:
         self.car.set_arrival_event(self)
         # Add event to timeflow
         self.time_flow.add_time_event(self)
+
+
+class CarDeparture:
+    def __init__(self, time_flow, car):
+        if car is None:
+            return None
+        self.time_flow = time_flow
+        self.car = car
+        self.stream = car.get_stream()
+        self.queue = self.stream.get_queue()
+        self.priority = self.stream.get_priority()
+        self.time_flow.add_conditional_event(self)
+
+    def execute(self):
+        """Method executes event"""
+        if not self.pre_executed():
+            return False
+        return self.on_executed()
+
+    def pre_executed(self):
+        """
+        Method run before on_executed.
+        Checks if event conditions are fulfilled.
+        Returns true when no higher priority stream awaits departure
+        """
+        # Check if any higher priority stream is used or awaits departure
+        higher_priority_streams = self.priority.get_higher_priority()
+        for _stream in higher_priority_streams:
+            if _stream.is_used() or _stream.is_queue_first_car():
+                return False
+        return True if self.car == self.queue.get_first_car() else False
+
+    def on_executed(self):
+        """
+        Method run when event is executed
+        Moves assigned car to intersection,
+        schedules CarDeparted time event
+        and adds conditional event for next car
+        """
+        self.queue.remove_first_car().move_to_intersection()
+        self.time_flow.remove_conditional_event(self)
+        # Add conditional event for next car in queue
+        CarDeparture(time_flow=self.time_flow, car=self.queue.get_first_car())
+        return True
