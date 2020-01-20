@@ -15,6 +15,9 @@ class Stream(ObjectBase):
     def assign_priority(self, priority):
         self.priority = priority
 
+    def get_cars_on_intersection(self):
+        return self.on_intersection
+
     def get_id(self):
         return self.id
 
