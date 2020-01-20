@@ -23,6 +23,20 @@ class Car(ObjectBase):
         else:
             return False
 
+    def move_to_intersection(self):
+        """
+        Method moves car onto the intersection
+        so the car can drive through it
+        """
+        self.parent_object.move_car_to_intersection(self)
+
+    def remove_from_intersection(self):
+        """
+        Method removes car from the intersection
+        simulating driving through it
+        """
+        self.parent_object.remove_car_from_intersection(self)
+
     def move_to_queue(self):
         self.parent_object.add_to_queue(self)
 

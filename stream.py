@@ -5,6 +5,8 @@ class Stream(ObjectBase):
     def __init__(self, id_=None, parent_object=None, connected_with=None):
         super().__init__(id_=id_, parent_object=parent_object)
         self.connected_with = connected_with
+        # List of cars from this stream currently driving through the intersection
+        self.on_intersection = []
         self.priority = None
 
     def add_to_queue(self, car):
@@ -35,3 +37,17 @@ class Stream(ObjectBase):
             return True
         else:
             return False
+
+    def move_car_to_intersection(self, car):
+        """
+        Method moves given car onto the intersection
+        so the car can drive through it
+        """
+        self.on_intersection.append(car)
+
+    def remove_car_from_intersection(self, car):
+        """
+        Method removes given car from the intersection
+        simulating driving through it
+        """
+        self.on_intersection.remove(car)
