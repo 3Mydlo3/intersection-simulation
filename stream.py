@@ -28,7 +28,10 @@ class Stream(ObjectBase):
         Each queue handles two streams.
         Method checks if first car in queue belongs to this stream.
         """
-        if self.parent_object.get_first_car().get_stream = self:
+        first_car = self.parent_object.get_first_car()
+        if first_car is None:
+            return False
+        if first_car.get_stream() == self:
             return True
         else:
             return False
