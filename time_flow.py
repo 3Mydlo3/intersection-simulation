@@ -8,14 +8,19 @@ class TimeFlow:
         # Dictionary of all time events.
         # Key is hashed time (in seconds) and value is list of events.
         self.time_events = {}
+        self.conditional_events = []
 
-    def add_event(self, event):
-        """Method adds event to events list"""
+    def add_time_event(self, event):
+        """Method adds time event to events list"""
         event_time = event.get_event_time()
         try:
             self.time_events[event_time].append(event)
         except KeyError:
             self.time_events[event_time] = [event]
+
+    def add_conditional_event(self, event):
+        """Method adds conditional event to events list"""
+        self.conditional_events.append(event)
 
     def advance_time(self):
         """Function advances simulation time"""
@@ -62,6 +67,14 @@ class TimeFlow:
                     return False
         return checked_time
 
+    def get_conditional_events(self):
+        """Method returns conditional events list"""
+        return self.conditional_events
+
     def get_current_events(self):
         """Function returns events planned for current time"""
         return self.time_events[self.current_time]
+
+    def remove_conditional_event(self, event):
+        """Method removes conditional event from events list"""
+        self.conditional_events.remove(event)

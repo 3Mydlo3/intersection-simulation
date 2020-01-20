@@ -30,4 +30,4 @@ class CarArrival:
         self.car = Car(parent_object=self.stream)
         self.car.set_arrival_event(self)
         # Add event to timeflow
-        self.time_flow.add_event(self)
+        self.time_flow.add_time_event(self)
