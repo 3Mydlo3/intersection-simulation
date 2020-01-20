@@ -47,8 +47,12 @@ class TimeFlow:
         for event in current_events:
             event.execute()
         conditional_events = self.get_conditional_events()
-        for event in conditional_events:
-            event.execute()
+        # Check if all cars should give way to another
+        if [0, 3, 4] == sorted([event.get_stream_id() for event in conditional_events]):
+            conditional_events[0].execute(forced=True)
+        else:
+            for event in conditional_events:
+                event.execute()
 
     def get_current_time(self):
         """Function returns current time"""
