@@ -29,7 +29,8 @@ class CarArrival:
         """
         # Move car to queue and assign conditional departure event
         self.car.move_to_queue()
-        CarDeparture(time_flow=self.time_flow, car=self.car)
+        if self.car.is_first_in_queue():
+            CarDeparture(time_flow=self.time_flow, car=self.car)
         # Schedule next car arrival for given stream
         CarArrival(time_flow=self.time_flow, stream=self.stream)
         return True
