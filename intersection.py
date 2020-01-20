@@ -25,6 +25,17 @@ class Intersection(ObjectBase):
             awaiting_cars.extend(_lane.get_queue())
         return awaiting_cars
 
+    def get_crossing_cars(self):
+        """Method returns cars currently crossing the intersection"""
+        crossing_cars = []
+        for _stream in self.streams:
+            crossing_cars.extend(_stream.get_cars_on_intersection())
+        return crossing_cars
+
+    def get_departed_cars(self):
+        """Method returns cars which crossed the intersection"""
+        departed_cars = [car for car in self.get_all_cars() if car.has_departed()]
+        return departed_cars
 
     def get_all_cars(self):
         """
