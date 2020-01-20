@@ -79,6 +79,21 @@ class Time:
         else:
             return NotImplemented
 
+    def __sub__(self, other):
+        new_time = Time(time_reference=self)
+        if isinstance(other, Time):
+            new_time.hours -= other.hours
+            new_time.minutes -= other.minutes
+            new_time.seconds -= other.seconds
+            new_time.update_time()
+            return new_time
+        elif isinstance(other, int):
+            new_time.seconds -= other
+            new_time.update_time()
+            return new_time
+        else:
+            return NotImplemented
+
     def update_time(self):
         """Function updates time to keep minutes and seconds under 60"""
         new_minutes = floor(self.seconds/60)
