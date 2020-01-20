@@ -12,6 +12,10 @@ class CarArrival:
         """Method returns event time"""
         return self.event_time
 
+    def execute(self):
+        """Method executes event"""
+        return self.on_executed()
+
     def on_executed(self):
         """
         Method run when event is executed

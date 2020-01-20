@@ -45,7 +45,10 @@ class TimeFlow:
         """Function executes current time events"""
         current_events = self.get_current_events()
         for event in current_events:
-            event.on_executed()
+            event.execute()
+        conditional_events = self.get_conditional_events()
+        for event in conditional_events:
+            event.execute()
 
     def get_current_time(self):
         """Function returns current time"""
