@@ -58,6 +58,8 @@ class CarDeparture:
         self.time_flow.add_conditional_event(self)
         # Assign departing event
         self.car.set_departing_event(self)
+        # Event start time
+        self.event_time = self.time_flow.get_current_time()
         self.executed = False
 
     def execute(self, forced=False):
@@ -66,6 +68,10 @@ class CarDeparture:
             return False
         self.executed = True
         return self.on_executed()
+
+    def get_stream_id(self):
+        """Method returns assigned stream id"""
+        return self.stream.get_id()
 
     def is_executed(self):
         return self.executed
