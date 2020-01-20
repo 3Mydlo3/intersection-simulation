@@ -21,6 +21,9 @@ class Stream(ObjectBase):
     def get_priority(self):
         return self.priority
 
+    def get_queue(self):
+        return self.parent_object
+
     def get_queue_first_car(self):
         """Returns first car in queue for given stream's queue"""
         return self.parent_object.get_first_car()
