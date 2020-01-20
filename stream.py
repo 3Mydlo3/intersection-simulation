@@ -38,6 +38,13 @@ class Stream(ObjectBase):
         else:
             return False
 
+    def is_used(self):
+        """
+        Method checks if any car from given stream
+        is driving through the intersection at the moment
+        """
+        return True if self.on_intersection != [] else False
+
     def move_car_to_intersection(self, car):
         """
         Method moves given car onto the intersection
