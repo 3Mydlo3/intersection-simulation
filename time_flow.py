@@ -8,6 +8,19 @@ class TimeFlow:
         # Dictionary of all time events.
         # Key is hashed time (in seconds) and value is list of events.
         self.time_events = {}
+        self.conditional_events = []
+
+    def add_time_event(self, event):
+        """Method adds time event to events list"""
+        event_time = event.get_event_time()
+        try:
+            self.time_events[event_time].append(event)
+        except KeyError:
+            self.time_events[event_time] = [event]
+
+    def add_conditional_event(self, event):
+        """Method adds conditional event to events list"""
+        self.conditional_events.append(event)
 
     def advance_time(self):
         """Function advances simulation time"""
@@ -28,10 +41,27 @@ class TimeFlow:
         else:
             return False
 
+    def execute_events(self):
+        """Function executes current time events"""
+        current_events = self.get_current_events()
+        for event in current_events:
+            event.execute()
+        conditional_events = self.get_conditional_events()
+        # Check if all cars should give way to another
+        if [0, 3, 4] == sorted([event.get_stream_id() for event in conditional_events]):
+            conditional_events[0].execute(forced=True)
+        else:
+            for event in conditional_events:
+                event.execute()
+
+    def get_current_time(self):
+        """Function returns current time"""
+        return self.current_time
+
     def get_next_event_time(self):
         """Function returns time of the next planned event"""
         next_events = []
-        checked_time = Time(time_reference=self.current_time)
+        checked_time = Time(time_reference=self.current_time) + 1
         while next_events == []:
             try:
                 # Get planned events for given time
@@ -39,11 +69,19 @@ class TimeFlow:
             except KeyError:
                 # There were no events so we need to increase time
                 # and check end conditions
-                checked_time += Time(seconds=1)
+                checked_time += 1
                 if self.check_end_condition(checked_time):
                     return False
         return checked_time
 
+    def get_conditional_events(self):
+        """Method returns conditional events list"""
+        return self.conditional_events
+
     def get_current_events(self):
         """Function returns events planned for current time"""
         return self.time_events[self.current_time]
+
+    def remove_conditional_event(self, event):
+        """Method removes conditional event from events list"""
+        self.conditional_events.remove(event)

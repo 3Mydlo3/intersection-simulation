@@ -2,12 +2,13 @@ from math import floor
 
 class Time:
     def __init__(self, hours=0, minutes=0, seconds=0, time_reference=None):
-        self.hours = hours
-        self.minutes = minutes
-        self.seconds = seconds
+        self.hours = int(hours)
+        self.minutes = int(minutes)
+        self.seconds = int(seconds)
         # If time reference was given, adjust
         if time_reference is not None:
             self += time_reference
+        self.update_time()
 
     def __eq__(self, other):
         """For == comparison support"""
@@ -50,12 +51,17 @@ class Time:
 
     def __add__(self, other):
         """For + operation support"""
+        new_time = Time(time_reference=self)
         if isinstance(other, Time):
-            self.hours += other.hours
-            self.minutes += other.minutes
-            self.seconds += other.seconds
-            self.update_time()
-            return Time(time_reference=self)
+            new_time.hours += other.hours
+            new_time.minutes += other.minutes
+            new_time.seconds += other.seconds
+            new_time.update_time()
+            return new_time
+        elif isinstance(other, int):
+            new_time.seconds += other
+            new_time.update_time()
+            return new_time
         else:
             return NotImplemented
 
@@ -66,6 +72,26 @@ class Time:
             self.minutes += other.minutes
             self.seconds += other.seconds
             self.update_time()
+            return self
+        elif isinstance(other, int):
+            self.seconds += other
+            self.update_time()
+            return self
+        else:
+            return NotImplemented
+
+    def __sub__(self, other):
+        new_time = Time(time_reference=self)
+        if isinstance(other, Time):
+            new_time.hours -= other.hours
+            new_time.minutes -= other.minutes
+            new_time.seconds -= other.seconds
+            new_time.update_time()
+            return new_time
+        elif isinstance(other, int):
+            new_time.seconds -= other
+            new_time.update_time()
+            return new_time
         else:
             return NotImplemented
 
@@ -91,3 +117,7 @@ class Time:
         minutes = floor((seconds - hours * 3600)/60)
         seconds -= (hours * 3600 + minutes * 60)
         return Time(hours, minutes, seconds)
+
+    def convert_to_text(self):
+        """Method prints time"""
+        return (f"{self.hours}:{self.minutes}:{self.seconds}")

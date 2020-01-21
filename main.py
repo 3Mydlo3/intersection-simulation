@@ -5,5 +5,6 @@ from simulation import Simulation
     SCRIPT
 """
 
+# Create and run simulation
 simulation = Simulation()
-simulation.run_simulation()
+simulation.print_stats()

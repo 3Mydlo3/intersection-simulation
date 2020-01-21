@@ -14,12 +14,16 @@ class Lane(ObjectBase):
         self.queue.append(object_)
 
     def get_first_car(self):
-        """Method returns first car from queue or None if not availabe."""
+        """Method returns first car from queue or None if not available."""
         try:
             car = self.queue[0]
             return car
         except IndexError:
             return None
+
+    def get_queue(self):
+        """Method returns all cars currently awaiting in queue"""
+        return self.queue
 
     def remove_first_car(self):
         """Method removes and returns first car from queue or None if not available."""
