@@ -81,5 +81,12 @@ class Car(ObjectBase):
         from arrival to full departure
         """
         arrival_time = self.arrival.get_event_time()
-        departed_time = self.departed.get_event_time()
-        self.time_in_system = departed_time - arrival_time
+        if self.departed is not None:
+            departed_time = self.departed.get_event_time()
+            self.time_in_system = departed_time - arrival_time
+            return self.get_time_in_system()
+        else:
+            current_time = self.get_current_time()
+            current_time - arrival_time
+            return self.get_time_in_system()
+
