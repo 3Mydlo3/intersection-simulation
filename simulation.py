@@ -7,8 +7,12 @@ import numpy as np
 class Simulation:
     def __init__(self):
         self.time = TimeFlow()
-        self.intersection = Intersection()
+        self.intersection = Intersection(parent_object=self)
         self.start_simulation()
+
+    def assign_child_object(self, object):
+        """Dummy method for child objects compatibility"""
+        pass
 
     def check_end(self):
         """Function checks if simulation end conditions are fulfilled"""
@@ -38,6 +42,9 @@ class Simulation:
         average_time_in_system = np.average(np.array([car.get_time_in_system().convert_to_seconds() for car in departed_cars]))
         average_time_in_system = Time(seconds=average_time_in_system)
         return average_time_in_system
+
+    def get_current_time(self):
+        return self.time.get_current_time()
 
     def print_stats(self):
         crossing_cars = self.intersection.get_crossing_cars()
