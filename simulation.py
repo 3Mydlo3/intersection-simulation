@@ -36,12 +36,17 @@ class Simulation:
         return self.intersection.get_departed_cars()
 
     def get_cars_avg_time_in_system(self):
-        departed_cars = self.get_cars_departed()
-        if departed_cars == []:
+        all_cars = self.get_cars_created()
+        if all_cars == []:
             return Time()
-        average_time_in_system = np.average(np.array([car.get_time_in_system().convert_to_seconds() for car in departed_cars]))
+        average_time_in_system = np.average(np.array([car.calculate_time_in_system().convert_to_seconds() for car in all_cars]))
         average_time_in_system = Time(seconds=average_time_in_system)
         return average_time_in_system
+
+    def get_cars_avg_wait_time(self):
+        all_cars = self.get_cars_created()
+        average_wait_time = np.average(np.array([car.calculate_wait_time().convert_to_seconds() for car in all_cars]))
+        return Time(seconds=average_wait_time)
 
     def get_current_time(self):
         return self.time.get_current_time()
@@ -51,6 +56,7 @@ class Simulation:
         print(f"Number of cars created  : {len(self.get_cars_created())}")
         print(f"Number of cars departed : {len(self.get_cars_departed())}")
         print(f"Number of cars awaiting : {len(self.get_cars_awaiting())}")
+        print(f"Average wait time       : {self.get_cars_avg_wait_time().convert_to_text()}")
         print(f"Average time in system  : {self.get_cars_avg_time_in_system().convert_to_text()}")
 
     def start_simulation(self):
