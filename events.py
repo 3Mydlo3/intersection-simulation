@@ -69,6 +69,10 @@ class CarDeparture:
         self.executed = True
         return self.on_executed()
 
+    def get_event_time(self):
+        """Method returns event time"""
+        return self.event_time
+
     def get_stream_id(self):
         """Method returns assigned stream id"""
         return self.stream.get_id()
