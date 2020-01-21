@@ -23,6 +23,10 @@ class Car(ObjectBase):
         """Method returns car's time in system"""
         return self.time_in_system
 
+    def get_wait_time(self):
+        """Method returns car's wait time in queue"""
+        return self.wait_time
+
     def has_arrived(self):
         return self.arrival.is_executed()
 
@@ -90,3 +94,14 @@ class Car(ObjectBase):
             current_time - arrival_time
             return self.get_time_in_system()
 
+    def calculate_wait_time(self):
+        """Method calculates time spent in queue"""
+        arrival_time = self.arrival.get_event_time()
+        if self.departing is not None:
+            departing_time = self.departing.get_event_time()
+            self.wait_time = departing_time - arrival_time
+            return self.get_wait_time()
+        else:
+            current_time = self.get_current_time()
+            self.wait_time = current_time - arrival_time
+            return self.get_wait_time()
