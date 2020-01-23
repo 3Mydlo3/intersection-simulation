@@ -172,7 +172,7 @@ class LightsPhase:
 
     def get_event_time(self):
         """Method returns event time"""
-        return self.event_time
+        return self.time
 
     def is_executed(self):
         return self.executed
@@ -188,5 +188,4 @@ class LightsPhase:
 
     def schedule_event(self):
         """Method schedules light change events"""
-        self.time = Time(seconds=self.light.get_green_duration(),
-            reference_time=self.intersection.get_current_time())
+        self.time = self.intersection.get_current_time() + self.lights.get_green_duration()
