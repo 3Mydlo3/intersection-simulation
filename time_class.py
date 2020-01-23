@@ -111,7 +111,7 @@ class Time:
             time = self
         return time.hours * 3600 + time.minutes * 60 + time.seconds
 
-    def convert_to_time(self, seconds):
+    def convert_to_time(seconds):
         """Converts given seconds to time"""
         hours = floor(seconds/3600)
         minutes = floor((seconds - hours * 3600)/60)
