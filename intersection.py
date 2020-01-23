@@ -13,7 +13,7 @@ class Intersection(ObjectBase):
             Lane(id_=2, parent_object=self)
         ]
         # Create and initialize streams
-        expected_interval = np.random.uniform(low=5.0, high=10.0)
+        expected_interval = [np.random.uniform(low=5.0, high=10.0) for _i in range (0, 6)]
         self.streams = self.create_streams(expected_interval=expected_interval)
         self.initialize_streams()
 
@@ -71,7 +71,7 @@ class Intersection(ObjectBase):
         for _lane in self.lanes:
             for _x in range (0, 2):
                 stream = Stream(id_=_i, parent_object=_lane,
-                                expected_interval=expected_interval)
+                                expected_interval=expected_interval[_i])
                 streams.append(stream)
                 _i += 1
         return streams
