@@ -146,3 +146,47 @@ class CarDeparted:
         self.car.set_departure_event(self)
         # Add event to timeflow
         self.time_flow.add_time_event(self)
+
+class LightsPhase:
+    def __init__(self, parent_object, time_flow, lights_remaining):
+        super().__init__(parent_object=parent_object)
+        self.intersection = parent_object
+        # Check if we are through all lights
+        self.lights_remaining = []
+        if lights_remaining == []:
+            self.lights_remaining = self.intersection.get_lights()
+        else:
+            self.lights_remaining = lights_remaining
+        # Get first lights from the list
+        self.lights = self.lights_remaining.pop(0)
+        # Usual events stuff
+        self.time_flow = time_flow
+        self.schedule_event()
+        self.time_flow.add_time_event(self)
+        self.executed = False
+
+    def execute(self, forced=False):
+        """Method executes event"""
+        self.executed = True
+        return self.on_executed()
+
+    def get_event_time(self):
+        """Method returns event time"""
+        return self.event_time
+
+    def is_executed(self):
+        return self.executed
+
+    def on_executed(self):
+        """
+        Method run when event is executed
+        Changes light to red and schedules
+        light change to green for next traffic lights
+        after 5 seconds.
+        """
+        pass
+
+    def schedule_event(self):
+        """Method schedules light change events"""
+        self.time = Time(seconds=self.light.get_green_duration(),
+            reference_time=self.intersection.get_current_time())

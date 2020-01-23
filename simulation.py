@@ -1,7 +1,7 @@
 from time_flow import TimeFlow
 from time_class import Time
 from intersection import Intersection
-from events import CarArrival
+from events import CarArrival, LightsPhase
 import numpy as np
 
 class Simulation:
@@ -56,10 +56,14 @@ class Simulation:
         """
         Functions handles simualtion start
         Schedules first car for each stream.
+        Starts first traffic lights cycle.
         """
         self.streams = self.intersection.get_streams()
         for _stream in self.streams:
             CarArrival(time_flow=self.time, stream=_stream)
+        # Start traffic lights cycles
+        LightsPhase(parent_object=self.intersection, time_flow=self.time,
+                    lights_remaining=[])
         self.run_simulation()
 
     def run_simulation(self):
