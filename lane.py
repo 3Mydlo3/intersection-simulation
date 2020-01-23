@@ -1,10 +1,10 @@
 from objectBase import ObjectBase
 
 class Lane(ObjectBase):
-    def __init__(self, id_=None, parent_object=None, outgoing=False):
+    def __init__(self, id_=None, parent_object=None, lights=None):
         super().__init__(id_=id_, parent_object=parent_object)
-        self.outgoing = outgoing
         self.queue = []
+        self.lights = lights
 
     def is_incoming(self):
         return (False if self.outgoing else True)
@@ -20,6 +20,10 @@ class Lane(ObjectBase):
             return car
         except IndexError:
             return None
+
+    def get_lights(self):
+        """Method returns traffic lights for current lane"""
+        return self.lights
 
     def get_queue(self):
         """Method returns all cars currently awaiting in queue"""

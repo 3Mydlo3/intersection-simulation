@@ -54,6 +54,7 @@ class CarDeparture:
         self.car = car
         self.stream = car.get_stream()
         self.queue = self.stream.get_queue()
+        self.lights = self.queue.get_lights()
         self.priority = self.stream.get_priority()
         self.time_flow.add_conditional_event(self)
         # Assign departing event
@@ -85,13 +86,18 @@ class CarDeparture:
         Method run before on_executed.
         Checks if event conditions are fulfilled.
         Returns true when no higher priority stream awaits departure
+        or when lights are green (when enabled)
         """
-        # Check if any higher priority stream is used or awaits departure
-        higher_priority_streams = self.priority.get_higher_priority()
-        for _stream in higher_priority_streams:
-            if _stream.is_used() or _stream.is_queue_first_car():
-                return False
-        return True if self.car == self.queue.get_first_car() else False
+        # Check if lights are enabled and green
+        if self.lights.is_on():
+                return True if self.lights.is_green() else False
+        else:
+            # Check if any higher priority stream is used or awaits departure
+            higher_priority_streams = self.priority.get_higher_priority()
+            for _stream in higher_priority_streams:
+                if _stream.is_used() or _stream.is_queue_first_car():
+                    return False
+            return True if self.car == self.queue.get_first_car() else False
 
     def on_executed(self):
         """
@@ -144,3 +150,91 @@ class CarDeparted:
         self.car.set_departure_event(self)
         # Add event to timeflow
         self.time_flow.add_time_event(self)
+
+class LightsPhase:
+    def __init__(self, intersection, time_flow, lights_remaining):
+        self.intersection = intersection
+        # Check if we are through all lights
+        self.lights_remaining = lights_remaining
+        # Get first light from the list
+        try:
+            self.light = self.lights_remaining.pop(0)
+        except IndexError:
+            self.lights_remaining = self.intersection.get_lights().copy()
+            self.light = self.lights_remaining.pop(0)
+        # Usual events stuff
+        self.time_flow = time_flow
+        self.schedule_event()
+        self.time_flow.add_time_event(self)
+        self.executed = False
+
+    def execute(self, forced=False):
+        """Method executes event"""
+        self.executed = True
+        return self.on_executed()
+
+    def get_event_time(self):
+        """Method returns event time"""
+        return self.time
+
+    def is_executed(self):
+        return self.executed
+
+    def on_executed(self):
+        """
+        Method run when event is executed
+        Changes light to red and schedules
+        light change to green for next traffic lights.
+        """
+        # Change light to red
+        self.light.switch_lights(state=False)
+        # Schedule new green light
+        LightsSwitch(intersection=self.intersection, time_flow=self.time_flow,
+                    lights_remaining=self.lights_remaining)
+
+    def schedule_event(self):
+        """Method schedules light change events"""
+        self.time = self.intersection.get_current_time() + self.light.get_green_duration()
+
+class LightsSwitch:
+    def __init__(self, intersection, time_flow, lights_remaining):
+        self.intersection = intersection
+        self.time_flow = time_flow
+        self.lights_remaining = lights_remaining
+        try:
+            self.light = self.lights_remaining[0]
+        except IndexError:
+            self.lights_remaining = self.intersection.get_lights().copy()
+            self.light = self.lights_remaining[0]
+        self.schedule_event()
+        self.time_flow.add_time_event(self)
+        self.executed = False
+
+    def execute(self, forced=False):
+        """Method executes event"""
+        self.executed = True
+        return self.on_executed()
+
+    def get_event_time(self):
+        """Method returns event time"""
+        return self.time
+
+    def is_executed(self):
+        return self.executed
+
+    def on_executed(self):
+        """
+        Method run when event is executed
+        Changes light to red and schedules
+        light change to green for next traffic lights
+        after 5 seconds.
+        """
+        # Change light to green
+        self.light.switch_lights(state=True)
+        # Schedule next lights phase
+        LightsPhase(intersection=self.intersection, time_flow=self.time_flow,
+                    lights_remaining=self.lights_remaining)
+
+    def schedule_event(self):
+        """Method schedules light change events"""
+        self.time = self.intersection.get_current_time() + 5
