@@ -180,11 +180,18 @@ class LightsPhase:
         """
         Method run when event is executed
         Changes light to red and schedules
-        light change to green for next traffic lights
-        after 5 seconds.
+        light change to green for next traffic lights.
         """
-        pass
+        # Change light to red
+        self.light.switch_lights(state=False)
+        # Schedule new green light
+        LightsSwitch(intersection=self.intersection, time_flow=self.time_flow,
+                    lights_remaining=self.lights_remaining)
 
     def schedule_event(self):
         """Method schedules light change events"""
-        self.time = self.intersection.get_current_time() + self.lights.get_green_duration()
+        self.time = self.intersection.get_current_time() + self.light.get_green_duration()
+
+class LightsSwitch:
+    def __init__(self, intersection, time_flow, lights_remaining):
+        pass
