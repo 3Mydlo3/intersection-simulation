@@ -62,7 +62,7 @@ class Simulation:
         for _stream in self.streams:
             CarArrival(time_flow=self.time, stream=_stream)
         # Start traffic lights cycles
-        LightsPhase(parent_object=self.intersection, time_flow=self.time,
+        LightsPhase(intersection=self.intersection, time_flow=self.time,
                     lights_remaining=[])
         self.run_simulation()
 

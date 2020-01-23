@@ -148,17 +148,16 @@ class CarDeparted:
         self.time_flow.add_time_event(self)
 
 class LightsPhase:
-    def __init__(self, parent_object, time_flow, lights_remaining):
-        super().__init__(parent_object=parent_object)
-        self.intersection = parent_object
+    def __init__(self, intersection, time_flow, lights_remaining):
+        self.intersection = intersection
         # Check if we are through all lights
-        self.lights_remaining = []
-        if lights_remaining == []:
-            self.lights_remaining = self.intersection.get_lights()
-        else:
-            self.lights_remaining = lights_remaining
-        # Get first lights from the list
-        self.lights = self.lights_remaining.pop(0)
+        self.lights_remaining = lights_remaining
+        # Get first light from the list
+        try:
+            self.light = self.lights_remaining.pop(0)
+        except IndexError:
+            self.lights_remaining = self.intersection.get_lights().copy()
+            self.light = self.lights_remaining.pop(0)
         # Usual events stuff
         self.time_flow = time_flow
         self.schedule_event()
