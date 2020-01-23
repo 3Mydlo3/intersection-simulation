@@ -2,6 +2,7 @@ from road import Road
 from stream import Stream
 from priority import Priority
 from objectBase import ObjectBase
+import numpy as np
 
 class Intersection(ObjectBase):
     def __init__(self, parent_object=None):
@@ -77,8 +78,10 @@ class Intersection(ObjectBase):
         for _x in range (0, 3):
             for _y in range (0, 3):
                 if (_x != _y):
+                    expected_interval = np.random.uniform(low=5.0, high=10.0)
                     stream = Stream(id_=_i, parent_object=self.roads[_x].get_incoming_lane(),
-                                    connected_with=self.roads[_y].get_outgoing_lane())
+                                    connected_with=self.roads[_y].get_outgoing_lane(),
+                                    expected_interval=expected_interval)
                     self.streams.append(stream)
                     _i += 1
         # Initialize stream priorities

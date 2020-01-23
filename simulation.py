@@ -51,8 +51,14 @@ class Simulation:
     def get_current_time(self):
         return self.time.get_current_time()
 
+    def get_expected_interval_times(self):
+        """Method returns expected intervals times for all streams"""
+        streams = self.intersection.get_streams()
+        return [stream.get_expected_interval() for stream in streams]
+
     def print_stats(self):
         crossing_cars = self.intersection.get_crossing_cars()
+        print(f"Expected arrival times  : {str(self.get_expected_interval_times())}")
         print(f"Number of cars created  : {len(self.get_cars_created())}")
         print(f"Number of cars departed : {len(self.get_cars_departed())}")
         print(f"Number of cars awaiting : {len(self.get_cars_awaiting())}")

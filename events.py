@@ -38,7 +38,7 @@ class CarArrival:
     def schedule_arrival(self):
         """Schedules car arrival at the intersection"""
         # Schedule arrival
-        self.event_time = self.time_flow.get_current_time() + np.random.randint(0, 10)
+        self.event_time = self.time_flow.get_current_time() + int(np.random.exponential(self.stream.get_expected_interval()))
         # Create car and assign event
         self.car = Car(parent_object=self.stream)
         self.car.set_arrival_event(self)
