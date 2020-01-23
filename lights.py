@@ -1,10 +1,11 @@
 from objectBase import ObjectBase
 
 class TrafficLights(ObjectBase):
-    def __init__(self, id_=None, parent_object=None, green_duration=None):
+    def __init__(self, id_=None, parent_object=None,
+                lights_enabled=False, green_duration=None):
         super().__init__(id_=id_, parent_object=parent_object)
         # Controls whether lights are working or not
-        self.on = False
+        self.on = lights_enabled
         # Current lights state
         self.green = False
         # How long green light should be on
