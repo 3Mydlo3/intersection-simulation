@@ -17,6 +17,9 @@ class ObjectBase:
     def get_child_objects(self):
         return self.child_objects
 
+    def get_current_time(self):
+        return self.parent_object.get_current_time()
+
     def get_intersection(self):
         intersection = self
         parent_object = self.get_parent_object()

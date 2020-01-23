@@ -1,10 +1,11 @@
 from time_class import Time
 
 class TimeFlow:
-    def __init__(self, start_time=(8,0,0), end_time=(9,0,0)):
+    def __init__(self, lights_enabled=False, start_time=(8,0,0), end_time=(9,0,0)):
         self.start_time = Time(*start_time)
         self.current_time = Time(*start_time)
         self.end_time = Time(*end_time)
+        self.lights_enabled = lights_enabled
         # Dictionary of all time events.
         # Key is hashed time (in seconds) and value is list of events.
         self.time_events = {}
@@ -48,7 +49,8 @@ class TimeFlow:
             event.execute()
         conditional_events = self.get_conditional_events()
         # Check if all cars should give way to another
-        if [0, 3, 4] == sorted([event.get_stream_id() for event in conditional_events]):
+        if (not self.lights_enabled
+            and [0, 3, 4] == sorted([event.get_stream_id() for event in conditional_events])):
             conditional_events[0].execute(forced=True)
         else:
             for event in conditional_events:

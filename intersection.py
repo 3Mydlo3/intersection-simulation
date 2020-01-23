@@ -1,19 +1,24 @@
 from lane import Lane
+from lights import TrafficLights
 from stream import Stream
 from priority import Priority
 from objectBase import ObjectBase
 import numpy as np
 
 class Intersection(ObjectBase):
-    def __init__(self):
-        super().__init__(parent_object=None)
+    def __init__(self, expected_interval, lights_enabled, green_duration, parent_object=None):
+        super().__init__(parent_object=parent_object)
+        self.lights = [
+            TrafficLights(id_=0,lights_enabled=lights_enabled, green_duration=green_duration[0]),
+            TrafficLights(id_=1,lights_enabled=lights_enabled, green_duration=green_duration[1]),
+            TrafficLights(id_=2,lights_enabled=lights_enabled, green_duration=green_duration[2])
+        ]
         self.lanes = [
-            Lane(id_=0, parent_object=self),
-            Lane(id_=1, parent_object=self),
-            Lane(id_=2, parent_object=self)
+            Lane(id_=0, parent_object=self, lights=self.lights[0]),
+            Lane(id_=1, parent_object=self, lights=self.lights[1]),
+            Lane(id_=2, parent_object=self, lights=self.lights[2])
         ]
         # Create and initialize streams
-        expected_interval = [np.random.uniform(low=5.0, high=10.0) for _i in range (0, 6)]
         self.streams = self.create_streams(expected_interval=expected_interval)
         self.initialize_streams()
 
@@ -53,6 +58,10 @@ class Intersection(ObjectBase):
     def get_lanes(self):
         """Method returns all intersection lanes"""
         return self.lanes
+
+    def get_lights(self):
+        """Method returns all intersection traffic lights"""
+        return self.lights
 
     def get_stream_by_id(self, _id):
         """Method returns stream by it's ID"""

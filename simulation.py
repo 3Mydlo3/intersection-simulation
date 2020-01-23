@@ -1,14 +1,24 @@
 from time_flow import TimeFlow
 from time_class import Time
 from intersection import Intersection
-from events import CarArrival
+from events import CarArrival, LightsPhase
 import numpy as np
 
 class Simulation:
-    def __init__(self):
-        self.time = TimeFlow()
-        self.intersection = Intersection()
+    def __init__(self, expected_interval, lights_enabled, green_duration):
+        self.expected_interval = expected_interval
+        self.lights_enabled = lights_enabled
+        self.green_duration = green_duration
+        self.time = TimeFlow(lights_enabled=lights_enabled)
+        self.intersection = Intersection(parent_object=self,
+                                        expected_interval=expected_interval,
+                                        lights_enabled=lights_enabled,
+                                        green_duration=green_duration)
         self.start_simulation()
+
+    def assign_child_object(self, object):
+        """Dummy method for child objects compatibility"""
+        pass
 
     def check_end(self):
         """Function checks if simulation end conditions are fulfilled"""
@@ -39,6 +49,9 @@ class Simulation:
         average_time_in_system = Time(seconds=average_time_in_system)
         return average_time_in_system
 
+    def get_current_time(self):
+        return self.time.get_current_time()
+
     def get_expected_interval_times(self):
         """Method returns expected intervals times for all streams"""
         streams = self.intersection.get_streams()
@@ -46,6 +59,7 @@ class Simulation:
 
     def print_stats(self):
         crossing_cars = self.intersection.get_crossing_cars()
+        print(f"Lights enabled          : {str(self.lights_enabled)}")
         print(f"Expected arrival times  : {str(self.get_expected_interval_times())}")
         print(f"Number of cars created  : {len(self.get_cars_created())}")
         print(f"Number of cars departed : {len(self.get_cars_departed())}")
@@ -56,10 +70,16 @@ class Simulation:
         """
         Functions handles simualtion start
         Schedules first car for each stream.
+        Starts first traffic lights cycle.
         """
         self.streams = self.intersection.get_streams()
         for _stream in self.streams:
             CarArrival(time_flow=self.time, stream=_stream)
+        # Start traffic lights cycles
+        LightsPhase(intersection=self.intersection, time_flow=self.time,
+                    lights_remaining=[])
+        # Turn on first light
+        self.intersection.get_lights()[0].switch_lights(state=True)
         self.run_simulation()
 
     def run_simulation(self):
