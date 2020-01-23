@@ -64,6 +64,8 @@ class Simulation:
         # Start traffic lights cycles
         LightsPhase(intersection=self.intersection, time_flow=self.time,
                     lights_remaining=[])
+        # Turn on first light
+        self.intersection.get_lights()[0].switch_lights(state=True)
         self.run_simulation()
 
     def run_simulation(self):
