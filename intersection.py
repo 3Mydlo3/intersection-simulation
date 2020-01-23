@@ -1,4 +1,5 @@
 from lane import Lane
+from lights import TrafficLights
 from stream import Stream
 from priority import Priority
 from objectBase import ObjectBase
@@ -7,10 +8,16 @@ import numpy as np
 class Intersection(ObjectBase):
     def __init__(self):
         super().__init__(parent_object=None)
+        green_duration = [np.random.randint(low=10, high=20) for _i in range (0, 3)]
+        self.lights = [
+            TrafficLights(id_=0, green_duration=green_duration[0]),
+            TrafficLights(id_=1, green_duration=green_duration[1]),
+            TrafficLights(id_=2, green_duration=green_duration[2])
+        ]
         self.lanes = [
-            Lane(id_=0, parent_object=self),
-            Lane(id_=1, parent_object=self),
-            Lane(id_=2, parent_object=self)
+            Lane(id_=0, parent_object=self, lights=self.lights[0]),
+            Lane(id_=1, parent_object=self, lights=self.lights[1]),
+            Lane(id_=2, parent_object=self, lights=self.lights[2])
         ]
         # Create and initialize streams
         expected_interval = [np.random.uniform(low=5.0, high=10.0) for _i in range (0, 6)]
