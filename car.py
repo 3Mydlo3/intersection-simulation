@@ -91,7 +91,7 @@ class Car(ObjectBase):
             return self.get_time_in_system()
         else:
             current_time = self.get_current_time()
-            current_time - arrival_time
+            self.time_in_system = current_time - arrival_time
             return self.get_time_in_system()
 
     def calculate_wait_time(self):
