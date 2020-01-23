@@ -23,7 +23,7 @@ class Intersection(ObjectBase):
         currently in queues
         """
         awaiting_cars = []
-        for _lane in self.get_incoming_lanes():
+        for _lane in self.get_lanes():
             awaiting_cars.extend(_lane.get_queue())
         return awaiting_cars
 
@@ -49,6 +49,10 @@ class Intersection(ObjectBase):
             stream_cars = _stream.get_child_objects()
             cars.extend(stream_cars)
         return cars
+
+    def get_lanes(self):
+        """Method returns all intersection lanes"""
+        return self.lanes
 
     def get_stream_by_id(self, _id):
         """Method returns stream by it's ID"""
