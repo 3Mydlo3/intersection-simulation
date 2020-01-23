@@ -194,4 +194,43 @@ class LightsPhase:
 
 class LightsSwitch:
     def __init__(self, intersection, time_flow, lights_remaining):
-        pass
+        self.intersection = intersection
+        self.time_flow = time_flow
+        self.lights_remaining = lights_remaining
+        try:
+            self.light = self.lights_remaining[0]
+        except IndexError:
+            self.lights_remaining = self.intersection.get_lights().copy()
+            self.light = self.lights_remaining[0]
+        self.schedule_event()
+        self.time_flow.add_time_event(self)
+        self.executed = False
+
+    def execute(self, forced=False):
+        """Method executes event"""
+        self.executed = True
+        return self.on_executed()
+
+    def get_event_time(self):
+        """Method returns event time"""
+        return self.time
+
+    def is_executed(self):
+        return self.executed
+
+    def on_executed(self):
+        """
+        Method run when event is executed
+        Changes light to red and schedules
+        light change to green for next traffic lights
+        after 5 seconds.
+        """
+        # Change light to green
+        self.light.switch_lights(state=True)
+        # Schedule next lights phase
+        LightsPhase(intersection=self.intersection, time_flow=self.time_flow,
+                    lights_remaining=self.lights_remaining)
+
+    def schedule_event(self):
+        """Method schedules light change events"""
+        self.time = self.intersection.get_current_time() + 5
