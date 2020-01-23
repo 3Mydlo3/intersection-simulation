@@ -1,4 +1,4 @@
-from road import Road
+from lane import Lane
 from stream import Stream
 from priority import Priority
 from objectBase import ObjectBase
@@ -7,13 +7,14 @@ import numpy as np
 class Intersection(ObjectBase):
     def __init__(self):
         super().__init__(parent_object=None)
-        self.roads = [
-            Road(id_=0, parent_object=self),
-            Road(id_=1, parent_object=self),
-            Road(id_=2, parent_object=self)
+        self.lanes = [
+            Lane(id_=0, parent_object=self)
+            Lane(id_=1, parent_object=self)
+            Lane(id_=2, parent_object=self)
         ]
-        self.incoming_lanes = self.get_incoming_lanes()
-        self.outgoing_lanes = self.get_outgoing_lanes()
+        # Create and initialize streams
+        expected_interval = np.random.uniform(low=5.0, high=10.0)
+        self.streams = self.create_streams(expected_interval=expected_interval)
         self.initialize_streams()
 
     def get_awaiting_cars(self):
@@ -49,18 +50,6 @@ class Intersection(ObjectBase):
             cars.extend(stream_cars)
         return cars
 
-    def get_incoming_lanes(self):
-        incoming_lanes = []
-        for road in self.roads:
-            incoming_lanes.append(road.get_incoming_lane())
-        return incoming_lanes
-
-    def get_outgoing_lanes(self):
-        outgoing_lanes = []
-        for road in self.roads:
-            outgoing_lanes.append(road.get_outgoing_lane())
-        return outgoing_lanes
-
     def get_stream_by_id(self, _id):
         """Method returns stream by it's ID"""
         for _stream in self.streams:
@@ -70,20 +59,21 @@ class Intersection(ObjectBase):
     def get_streams(self):
         return self.streams
 
-    def initialize_streams(self):
-        """Create streams and initialize their priorities"""
-        self.streams = []
-        # Create streams
+    def create_streams(self, expected_interval):
+        """Creates streams and assigns expected intervals"""
+        streams = []
+        # Create streams 0-5
         _i = 0
-        for _x in range (0, 3):
-            for _y in range (0, 3):
-                if (_x != _y):
-                    expected_interval = np.random.uniform(low=5.0, high=10.0)
-                    stream = Stream(id_=_i, parent_object=self.roads[_x].get_incoming_lane(),
-                                    connected_with=self.roads[_y].get_outgoing_lane(),
-                                    expected_interval=expected_interval)
-                    self.streams.append(stream)
-                    _i += 1
+        for _lane in self.lanes:
+            for _x in range (0, 2):
+                stream = Stream(id_=_i, parent_object=_lane,
+                                expected_interval=expected_interval)
+                streams.append(stream)
+                _i += 1
+        return streams
+
+    def initialize_streams(self):
+        """Initialize stream priorities"""
         # Initialize stream priorities
         # First column are higher priority streams
         # Second column are lower priority streams

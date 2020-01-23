@@ -3,9 +3,8 @@ from priority import Priority
 
 class Stream(ObjectBase):
     def __init__(self, expected_interval, id_=None,
-            parent_object=None, connected_with=None):
+            parent_object=None):
         super().__init__(id_=id_, parent_object=parent_object)
-        self.connected_with = connected_with
         self.expected_interval = expected_interval
         # List of cars from this stream currently driving through the intersection
         self.on_intersection = []

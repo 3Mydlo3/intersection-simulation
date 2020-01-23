@@ -1,9 +1,8 @@
 from objectBase import ObjectBase
 
 class Lane(ObjectBase):
-    def __init__(self, id_=None, parent_object=None, outgoing=False):
+    def __init__(self, id_=None, parent_object=None):
         super().__init__(id_=id_, parent_object=parent_object)
-        self.outgoing = outgoing
         self.queue = []
 
     def is_incoming(self):
