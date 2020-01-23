@@ -54,6 +54,7 @@ class CarDeparture:
         self.car = car
         self.stream = car.get_stream()
         self.queue = self.stream.get_queue()
+        self.lights = self.queue.get_lights()
         self.priority = self.stream.get_priority()
         self.time_flow.add_conditional_event(self)
         # Assign departing event
@@ -81,13 +82,18 @@ class CarDeparture:
         Method run before on_executed.
         Checks if event conditions are fulfilled.
         Returns true when no higher priority stream awaits departure
+        or when lights are green (when enabled)
         """
-        # Check if any higher priority stream is used or awaits departure
-        higher_priority_streams = self.priority.get_higher_priority()
-        for _stream in higher_priority_streams:
-            if _stream.is_used() or _stream.is_queue_first_car():
-                return False
-        return True if self.car == self.queue.get_first_car() else False
+        # Check if lights are enabled and green
+        if self.lights.is_on():
+                return True if self.lights.is_green() else False
+        else:
+            # Check if any higher priority stream is used or awaits departure
+            higher_priority_streams = self.priority.get_higher_priority()
+            for _stream in higher_priority_streams:
+                if _stream.is_used() or _stream.is_queue_first_car():
+                    return False
+            return True if self.car == self.queue.get_first_car() else False
 
     def on_executed(self):
         """
