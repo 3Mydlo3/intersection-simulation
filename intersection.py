@@ -8,8 +8,8 @@ class Intersection(ObjectBase):
     def __init__(self):
         super().__init__(parent_object=None)
         self.lanes = [
-            Lane(id_=0, parent_object=self)
-            Lane(id_=1, parent_object=self)
+            Lane(id_=0, parent_object=self),
+            Lane(id_=1, parent_object=self),
             Lane(id_=2, parent_object=self)
         ]
         # Create and initialize streams
