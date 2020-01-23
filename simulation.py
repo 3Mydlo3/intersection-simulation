@@ -72,6 +72,22 @@ class Simulation:
         print(f"Average wait time       : {self.get_cars_avg_wait_time().convert_to_text()}")
         print(f"Average time in system  : {self.get_cars_avg_time_in_system().convert_to_text()}")
 
+    def get_results(self):
+        """
+        Method returns simulation results as dictionary.
+        Contains:
+        'cars_created', 'cars_departed', 'cars_awaiting',
+        'avg_wait_time' and 'avg_time_in_system'.
+        """
+        results = {
+            'cars_created': len(self.get_cars_created()),
+            'cars_departed': len(self.get_cars_departed()),
+            'cars_awaiting': len(self.get_cars_awaiting()),
+            'avg_wait_time': self.get_cars_avg_wait_time(),
+            'avg_time_in_system': self.get_cars_avg_time_in_system()
+        }
+        return results
+
     def start_simulation(self):
         """
         Functions handles simualtion start
