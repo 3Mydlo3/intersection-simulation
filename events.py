@@ -81,6 +81,18 @@ class CarDeparture:
     def is_executed(self):
         return self.executed
 
+    def is_passage_empty(self):
+        """
+        Method checks if there are any cars on the intersection
+        moving in colliding streams.
+        """
+        higher_priority_streams = self.priority.get_higher_priority()
+        lower_priority_streams = self.priority.get_lower_priority()
+        for _stream in (higher_priority_streams + lower_priority_streams):
+            if _stream.is_used():
+                return False
+        return True
+
     def pre_executed(self):
         """
         Method run before on_executed.
@@ -90,12 +102,15 @@ class CarDeparture:
         """
         # Check if lights are enabled and green
         if self.lights.is_on():
-                return True if self.lights.is_green() else False
+            return True if self.lights.is_green() else False
         else:
-            # Check if any higher priority stream is used or awaits departure
+            # Check if any colliding stream is used
+            if not self.is_passage_empty():
+                return False
+            # Check if any higher priority stream awaits departure
             higher_priority_streams = self.priority.get_higher_priority()
             for _stream in higher_priority_streams:
-                if _stream.is_used() or _stream.is_queue_first_car():
+                if _stream.is_queue_first_car():
                     return False
             return True if self.car == self.queue.get_first_car() else False
 
