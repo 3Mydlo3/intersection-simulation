@@ -145,7 +145,8 @@ class CarDeparted:
     def schedule_departed(self):
         """Method schedules car's departure time"""
         # Schedule departure
-        self.event_time = self.time_flow.get_current_time() + np.random.randint(3, 5)
+        departure_time = 3
+        self.event_time = self.time_flow.get_current_time() + departure_time
         # Assign departure event
         self.car.set_departure_event(self)
         # Add event to timeflow
