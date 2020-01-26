@@ -1,5 +1,6 @@
 # Modules
 import numpy as np
+from scipy.stats import ttest_ind
 # Files
 from simulation import Simulation
 from time_class import Time
@@ -21,6 +22,8 @@ equal_green_duration = True
 expected_interval_range = [5, 15]
 # Controls whether all streams have the same expected interval
 equal_expected_interval = False
+# Alpha for means T-test
+alpha = 0.05
 
 # Simulation results list
 simulations_results = {
@@ -61,5 +64,21 @@ for _i in range(0, simulations_number):
     simulations_results['lights_enabled'].append(np.average(np.array(simulation_results_lights_enabled)))
     simulations_results['lights_disabled'].append(np.average(np.array(simulation_results_lights_disabled)))
 
-print(f"Average time in system with lights   : {Time.convert_to_time(seconds=np.average(np.array(simulations_results['lights_enabled']))).convert_to_text()}")
-print(f"Average time in system without lights: {Time.convert_to_time(seconds=np.average(np.array(simulations_results['lights_disabled']))).convert_to_text()}")
+results_with_lights = np.array(simulations_results['lights_enabled'])
+results_without_lights = np.array(simulations_results['lights_disabled'])
+average_with_lights = np.average(results_with_lights)
+average_without_lights = np.average(results_without_lights)
+print(f"Average time in system with lights   : {Time.convert_to_time(seconds=average_with_lights).convert_to_text()}")
+print(f"Average time in system without lights: {Time.convert_to_time(seconds=average_without_lights).convert_to_text()}")
+
+# Perform one sided T-test
+statistic, pvalue = ttest_ind(results_with_lights, results_without_lights, equal_var=False)
+print("--------------------------------------")
+print(f"One sided T-test for the means of two independent samples")
+print(f"H0: Means are equal")
+print(f"H1: Mean of system with lights is greater")
+print(f"alpha          = {alpha}")
+print(f"p-value        = {pvalue/2}")
+print(f"test statistic = {statistic}")
+print(f"Can reject H0?   {pvalue/2 < alpha}")
+print("--------------------------------------")
