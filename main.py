@@ -86,6 +86,16 @@ print("--------------------------------------")
 
 # Plots
 
+# Q-Q plot
+qq_plot, ax_qq = plt.subplots()
+ax_qq.set_title('Q-Q')
+ax_qq.set_xlabel('Lights enabled')
+ax_qq.set_ylabel('Lights disabled')
+ax_qq.plot([0, 300], [0, 300], color='black')
+ax_qq.set_xbound(lower=0, upper=300)
+ax_qq.set_ybound(lower=0, upper=300)
+ax_qq.scatter(results_with_lights, results_without_lights)
+
 # Box plot
 box_plot, ax_box = plt.subplots()
 ax_box.set_title('Box plot')
