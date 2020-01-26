@@ -2,10 +2,11 @@ from objectBase import ObjectBase
 from priority import Priority
 
 class Stream(ObjectBase):
-    def __init__(self, expected_interval, id_=None,
-            parent_object=None):
+    def __init__(self, expected_interval, departure_time,
+            id_=None, parent_object=None):
         super().__init__(id_=id_, parent_object=parent_object)
         self.expected_interval = expected_interval
+        self.departure_time = departure_time
         # List of cars from this stream currently driving through the intersection
         self.on_intersection = []
         self.priority = None
@@ -18,6 +19,9 @@ class Stream(ObjectBase):
 
     def get_cars_on_intersection(self):
         return self.on_intersection
+
+    def get_departure_time(self):
+        return self.departure_time
 
     def get_expected_interval(self):
         return self.expected_interval

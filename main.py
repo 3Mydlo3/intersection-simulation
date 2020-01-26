@@ -23,6 +23,8 @@ equal_green_duration = True
 expected_interval_range = [5, 15]
 # Controls whether all streams have the same expected interval
 equal_expected_interval = False
+# Departure time for lights enabled and disabled system
+departure_time = [3, 3]
 # Alpha for means T-test
 alpha = 0.05
 
@@ -56,10 +58,10 @@ for _i in range(0, simulations_number):
     # Repeat 'simulation_repeats' times for average for given params
     for _j in range (0, simulation_repeats):
         # Create and run simulation with lights enabled
-        simulation = Simulation(expected_interval=expected_interval, lights_enabled=True, green_duration=green_duration)
+        simulation = Simulation(expected_interval=expected_interval, lights_enabled=True, green_duration=green_duration, departure_time=departure_time)
         simulation_results_lights_enabled.append(simulation.get_results()['avg_time_in_system'].convert_to_seconds())
         # And second time, with lights disabled
-        simulation = Simulation(expected_interval=expected_interval, lights_enabled=False, green_duration=green_duration)
+        simulation = Simulation(expected_interval=expected_interval, lights_enabled=False, green_duration=green_duration, departure_time=departure_time)
         simulation_results_lights_disabled.append(simulation.get_results()['avg_time_in_system'].convert_to_seconds())
         print(f"{_i} : {_j}")
     simulations_results['lights_enabled'].append(np.average(np.array(simulation_results_lights_enabled)))

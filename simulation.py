@@ -5,15 +5,18 @@ from events import CarArrival, LightsPhase
 import numpy as np
 
 class Simulation:
-    def __init__(self, expected_interval, lights_enabled, green_duration):
+    def __init__(self, expected_interval, lights_enabled, green_duration,
+                departure_time):
         self.expected_interval = expected_interval
         self.lights_enabled = lights_enabled
         self.green_duration = green_duration
+        self.departure_time = departure_time
         self.time = TimeFlow(lights_enabled=lights_enabled)
         self.intersection = Intersection(parent_object=self,
                                         expected_interval=expected_interval,
                                         lights_enabled=lights_enabled,
-                                        green_duration=green_duration)
+                                        green_duration=green_duration,
+                                        departure_time=departure_time)
         self.start_simulation()
 
     def assign_child_object(self, object):
@@ -41,11 +44,15 @@ class Simulation:
         """Method returns all cars which crossed the intersection"""
         return self.intersection.get_departed_cars()
 
-    def get_cars_avg_time_in_system(self):
+    def get_cars_time_in_system(self):
+        """Method returns list of times in system for all cars"""
         all_cars = self.get_cars_created()
         if all_cars == []:
-            return Time()
-        average_time_in_system = np.average(np.array([car.calculate_time_in_system().convert_to_seconds() for car in all_cars]))
+            return []
+        return np.array([car.calculate_time_in_system().convert_to_seconds() for car in all_cars])
+
+    def get_cars_avg_time_in_system(self):
+        average_time_in_system = np.average(self.get_cars_time_in_system())
         average_time_in_system = Time(seconds=average_time_in_system)
         return average_time_in_system
 

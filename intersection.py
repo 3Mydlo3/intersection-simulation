@@ -6,7 +6,8 @@ from objectBase import ObjectBase
 import numpy as np
 
 class Intersection(ObjectBase):
-    def __init__(self, expected_interval, lights_enabled, green_duration, parent_object=None):
+    def __init__(self, expected_interval, lights_enabled, green_duration,
+                departure_time, parent_object=None):
         super().__init__(parent_object=parent_object)
         self.lights = [
             TrafficLights(id_=0,lights_enabled=lights_enabled, green_duration=green_duration[0]),
@@ -19,7 +20,8 @@ class Intersection(ObjectBase):
             Lane(id_=2, parent_object=self, lights=self.lights[2])
         ]
         # Create and initialize streams
-        self.streams = self.create_streams(expected_interval=expected_interval)
+        departure_time = departure_time[not lights_enabled]
+        self.streams = self.create_streams(expected_interval=expected_interval, departure_time=departure_time)
         self.initialize_streams()
 
     def get_awaiting_cars(self):
@@ -72,7 +74,7 @@ class Intersection(ObjectBase):
     def get_streams(self):
         return self.streams
 
-    def create_streams(self, expected_interval):
+    def create_streams(self, expected_interval, departure_time):
         """Creates streams and assigns expected intervals"""
         streams = []
         # Create streams 0-5
@@ -80,7 +82,8 @@ class Intersection(ObjectBase):
         for _lane in self.lanes:
             for _x in range (0, 2):
                 stream = Stream(id_=_i, parent_object=_lane,
-                                expected_interval=expected_interval[_i])
+                                expected_interval=expected_interval[_i],
+                                departure_time=departure_time)
                 streams.append(stream)
                 _i += 1
         return streams

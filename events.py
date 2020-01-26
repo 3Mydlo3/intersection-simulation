@@ -134,6 +134,7 @@ class CarDeparted:
         self.time_flow = time_flow
         self.car = car
         self.stream = car.get_stream()
+        self.departure_time = self.stream.get_departure_time()
         self.schedule_departed()
         self.executed = False
 
@@ -160,8 +161,7 @@ class CarDeparted:
     def schedule_departed(self):
         """Method schedules car's departure time"""
         # Schedule departure
-        departure_time = 3
-        self.event_time = self.time_flow.get_current_time() + departure_time
+        self.event_time = self.time_flow.get_current_time() + self.departure_time
         # Assign departure event
         self.car.set_departure_event(self)
         # Add event to timeflow
