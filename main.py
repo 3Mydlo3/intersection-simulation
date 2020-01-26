@@ -1,5 +1,6 @@
 # Modules
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy.stats import ttest_ind
 # Files
 from simulation import Simulation
@@ -82,3 +83,13 @@ print(f"p-value        = {pvalue/2}")
 print(f"test statistic = {statistic}")
 print(f"Can reject H0?   {pvalue/2 < alpha}")
 print("--------------------------------------")
+
+# Plots
+
+# Box plot
+box_plot, ax_box = plt.subplots()
+ax_box.set_title('Box plot')
+ax_box.set_xlabel('Intersection type')
+ax_box.set_ylabel('Time in system (seconds)')
+ax_box.boxplot([results_with_lights, results_without_lights], labels=["Lights enabled", "Lights disabled"])
+plt.show()
